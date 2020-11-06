@@ -1,6 +1,7 @@
 ﻿using GradeBook.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GradeBook.GradeBooks
@@ -16,51 +17,51 @@ namespace GradeBook.GradeBooks
         // This method overrides the base class method.
         public override char GetLetterGrade(double averageGrade)
         {
-            if(Students.Count < 5 )
+            // Validate the amount of students. 
+            if (Students.Count < 5)
             {
                 throw new InvalidOperationException("Ranked-grading requires a minimum of 5 students to work");
             }
 
-            var studentGroup = Students.Count * .2;     // 20% of the total # of students.
+            int threshold = (int)Math.Ceiling(Students.Count * .2);     // 20% of the total # of students.
 
             // Get the average grades in order
-            var averageGrades = new List<double>();
-            foreach(var student in Students)
-            {
-                averageGrades.Add(student.AverageGrade);
-            }
-            averageGrades.Sort();
-            
+            var averageGrades = Students.OrderByDescending(x => x.AverageGrade).ToList();
+
             // Calculate the grade.
-            for(int i = 0; i < averageGrades.Count; i++)
+            for (int i = 0; i < averageGrades.Count; i++)
             {
-                if(i < studentGroup)
+                if (i < threshold)
                 {
-                    if(averageGrade > averageGrades[i])
+                    if (averageGrade >= averageGrades[i].AverageGrade)
                     {
                         return 'A';
                     }
                 }
-                else if(i < studentGroup * 2)
+                else if (i < threshold * 2)
                 {
-                    if(averageGrade > averageGrades[i])
+                    if (averageGrade >= averageGrades[i].AverageGrade)
                     {
                         return 'B';
                     }
                 }
-                else if (i < studentGroup * 3)
+                else if (i < threshold * 3)
                 {
-                    if (averageGrade > averageGrades[i])
+                    if (averageGrade >= averageGrades[i].AverageGrade)
                     {
                         return 'C';
                     }
                 }
-                else if (i < studentGroup * 4)
+                else if (i < threshold * 4)
                 {
-                    if (averageGrade > averageGrades[i])
+                    if (averageGrade >= averageGrades[i].AverageGrade)
                     {
                         return 'D';
                     }
+                }
+                else
+                {
+                    break;
                 }
             }
 
