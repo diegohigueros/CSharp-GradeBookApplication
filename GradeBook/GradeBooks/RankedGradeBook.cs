@@ -9,7 +9,7 @@ namespace GradeBook.GradeBooks
     public class RankedGradeBook : BaseGradeBook
     {
         // This constructor calls the base class constructor.
-        public RankedGradeBook(string name) : base(name)
+        public RankedGradeBook(string name, bool weighted) : base(name, weighted)
         {
             Type = GradeBookType.Ranked;
         }

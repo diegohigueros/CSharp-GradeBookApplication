@@ -35,21 +35,22 @@ namespace GradeBook.UserInterfaces
         public static void CreateCommand(string command)
         {
             var parts = command.Split(' ');
-            if (parts.Length != 3)
+            if (parts.Length != 4)
             {
-                Console.WriteLine("Command not valid, Create requires a name and type of gradebook.");
+                Console.WriteLine("Command not valid, Create requires a name and type of gradebook, if it's weighted (true/false).");
                 return;
             }
             var name = parts[1];
+            bool weighted = bool.Parse(parts[3]);
             if(parts[2] == GradeBookType.Standard.ToString())
             {
-                StandardGradeBook gradeBook = new StandardGradeBook(name);
+                StandardGradeBook gradeBook = new StandardGradeBook(name, weighted);
                 Console.WriteLine("Created standard gradebook {0}.", name);
                 GradeBookUserInterface.CommandLoop(gradeBook);
             }
             else if (parts[2] == GradeBookType.Ranked.ToString())
             {
-                RankedGradeBook gradeBook = new RankedGradeBook(name);
+                RankedGradeBook gradeBook = new RankedGradeBook(name,weighted);
                 Console.WriteLine("Created ranked gradebook {0}.", name);
                 GradeBookUserInterface.CommandLoop(gradeBook);
             }
